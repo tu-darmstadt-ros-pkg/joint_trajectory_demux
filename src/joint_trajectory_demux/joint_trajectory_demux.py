@@ -39,8 +39,9 @@ class JointTrajectoryDemux:
 
     def trajectory_cb(self, trajectory_msg):
         # Fill next trajectory message of each controller with same trajectory points
-        for point in trajectory_msg.points:
-            for c in self.controllers:
+        for c in self.controllers:
+            c.next_trajectory_msg.header = trajectory_msg.header
+            for point in trajectory_msg.points:
                 p = trajectory_msgs.msg.JointTrajectoryPoint()
                 p.time_from_start = point.time_from_start
                 c.next_trajectory_msg.points.append(p)
